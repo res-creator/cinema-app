@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CinéCity Netflix</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         :root { --red: #E50914; --bg: #000; --card: #141414; }
         
-        /* Базовые настройки, чтобы ничего не дергалось */
+        /* Базовые настройки, чтобы приложение не дергалось */
         html, body { 
             margin: 0; padding: 0; background: var(--bg); 
             font-family: 'Roboto', sans-serif; color: #fff; 
@@ -23,13 +25,13 @@
             overflow-y: auto; /* ВКЛЮЧАЕМ СКРОЛЛ ТУТ */
             -webkit-overflow-scrolling: touch;
             background: var(--bg);
-            padding-bottom: 100px; /* Чтобы контент не перекрывался нижней навигацией */
+            padding-bottom: 120px; /* Отступ внизу, чтобы контент не перекрывался */
             box-sizing: border-box;
         }
         .screen.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* HEADER */
+        /* HEADER С КНОПКОЙ НАЗАД */
         .top-bar { 
             position: fixed; top: 0; width: 100%; z-index: 100; 
             display: flex; align-items: center; padding: 15px 20px; 
@@ -37,18 +39,19 @@
             box-sizing: border-box;
         }
         .back-btn { cursor: pointer; background: rgba(0,0,0,0.6); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin-right: 15px; border: none; color: white; }
-        .logo { color: var(--red); font-weight: 900; font-size: 24px; flex-grow: 1; }
+        .logo { color: var(--red); font-weight: 900; font-size: 24px; flex-grow: 1; text-decoration: none; }
 
-        /* ГЛАВНЫЙ БАННЕР */
+        /* ГЛАВНЫЙ БАННЕР (Постер Дюны) */
         .hero { 
             width: 100%; min-height: 70vh; /* Минимальная высота баннера */
-            background: linear-gradient(to top, var(--bg), transparent 50%), url('./main_hero.jpg') center top; 
+            background: linear-gradient(to top, var(--bg), transparent 50%), url('main_hero.jpg') center top; 
             background-size: cover; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 40px; 
+            text-align: center;
         }
-        .hero-title { font-size: 42px; font-weight: 900; margin-bottom: 15px; text-transform: uppercase; text-shadow: 0 4px 10px rgba(0,0,0,0.8); text-align: center; }
+        .hero-title { font-size: 42px; font-weight: 900; margin-bottom: 15px; text-transform: uppercase; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
 
         .btn-play { background: #fff; color: #000; border: none; padding: 12px 25px; border-radius: 4px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 16px; }
-        .btn-list { background: rgba(255, 255, 255, 0.25); color: #fff; border: none; padding: 12px 15px; border-radius: 4px; backdrop-filter: blur(10px); }
+        .btn-list { background: rgba(255, 255, 255, 0.25); color: #fff; border: none; padding: 12px 15px; border-radius: 4px; backdrop-filter: blur(10px); cursor: pointer; }
 
         /* КОНТЕНТ */
         .row-title { padding: 25px 20px 10px; font-size: 19px; font-weight: 700; }
@@ -122,7 +125,7 @@
         </div>
         <div id="detImg" style="width: 100%; height: 50vh; background-size: cover; background-position: center;"></div>
         <div style="padding: 25px;">
-            <h1 id="detTitle" style="margin: 0 0 10px; font-size: 32px;"></h1>
+            <h1 id="detTitle" style="margin: 0 0 10px; font-size: 32px;">Название</h1>
             <div style="color: #46d369; font-weight: 700; margin-bottom: 20px; font-size: 14px;">98% совпадение • 2024 • 16+</div>
             <p style="color: #ccc; font-size: 15px; line-height: 1.6; margin-bottom: 30px;">
                 Захватывающая история теперь доступна в Glodeni. Бронируйте лучшие места прямо сейчас через наше приложение.
@@ -134,7 +137,7 @@
     <div id="booking" class="screen">
         <div class="top-bar">
             <button class="back-btn" onclick="showScreen('details')"><i data-lucide="arrow-left"></i></button>
-            <span style="font-weight: 700;">Выбор мест</span>
+            <span style="font-weight: 700; font-size: 18px;">Выбор мест</span>
         </div>
         <div style="margin-top: 80px; text-align: center;">
             <div style="width: 80%; height: 4px; background: var(--red); margin: 0 auto; border-radius: 10px; box-shadow: 0 0 15px var(--red);"></div>
@@ -155,27 +158,32 @@
     <div id="payModal" class="modal">
         <div style="width: 40px; height: 4px; background: #333; border-radius: 10px; margin: -15px auto 25px;"></div>
         <i data-lucide="shield-check" size="48" color="#46d369" style="margin-bottom: 15px;"></i>
-        <h2>Оплата</h2>
-        <button class="btn-play" style="width: 100%; justify-content: center; margin-top: 20px;" onclick="alert('Билет куплен!'); location.reload();">Подтвердить</button>
-        <p style="margin-top: 20px; font-size: 12px; color: #555;" onclick="closeModal()">Отмена</p>
+        <h2>Подтверждение оплаты</h2>
+        <p style="color: #888; margin-bottom: 30px; font-size: 14px;">Ваши билеты будут доступны в разделе «Профиль».</p>
+        <button class="btn-play" style="width: 100%; justify-content: center; margin-top: 20px;" onclick="alert('Билет куплен!'); closeModal(); showScreen('home');">Купить через Google Pay</button>
+        <p style="margin-top: 20px; font-size: 12px; color: #555; cursor: pointer;" onclick="closeModal()">Отмена</p>
     </div>
 
     <script>
+        // Инициализация иконок
         lucide.createIcons();
 
+        // Функция переключения экранов
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             const target = document.getElementById(id);
             target.classList.add('active');
-            target.scrollTo(0,0);
+            target.scrollTo(0,0); // Сбрасываем скролл вверх
         }
 
+        // Открыть описание фильма
         function openDetails(img, title) {
             document.getElementById('detImg').style.backgroundImage = `url('${img}')`;
             document.getElementById('detTitle').innerText = title;
             showScreen('details');
         }
 
+        // Модальное окно
         function openModal() {
             document.getElementById('payModal').classList.add('active');
             document.getElementById('overlay').classList.add('active');
@@ -186,7 +194,7 @@
             document.getElementById('overlay').classList.remove('active');
         }
 
-        // Сетка мест
+        // Генерация сетки мест (50 мест)
         const grid = document.getElementById('seatsGrid');
         let totalCost = 0;
         for (let r = 0; r < 7; r++) {
@@ -196,7 +204,7 @@
                 if (s === 4) { let gap = document.createElement('div'); gap.style.width = '16px'; row.appendChild(gap); }
                 const seat = document.createElement('div');
                 seat.className = 'seat';
-                if (Math.random() < 0.2) seat.classList.add('occupied');
+                if (Math.random() < 0.2) seat.classList.add('occupied'); // Случайно занятые места
                 else {
                     seat.onclick = function() {
                         this.classList.toggle('selected');
