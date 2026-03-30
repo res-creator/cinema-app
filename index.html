@@ -11,113 +11,125 @@
         body { margin: 0; background: var(--bg); font-family: 'Roboto', sans-serif; color: #fff; overflow: hidden; }
         
         /* ЭКРАНЫ */
-        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; display: none; flex-direction: column; overflow-y: auto; background: var(--bg); }
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; display: none; flex-direction: column; overflow-y: auto; background: var(--bg); padding-bottom: 80px; }
         .screen.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* HEADER */
-        .header { position: fixed; top: 0; width: 100%; z-index: 100; display: flex; justify-content: space-between; padding: 15px 20px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); box-sizing: border-box; }
-        .logo { color: var(--red); font-weight: 900; font-size: 22px; }
+        /* ВЕРХНЯЯ ПАНЕЛЬ С КНОПКОЙ НАЗАД */
+        .top-bar { 
+            position: fixed; top: 0; width: 100%; z-index: 100; 
+            display: flex; align-items: center; padding: 15px 20px; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            box-sizing: border-box;
+        }
+        .back-btn { cursor: pointer; background: rgba(0,0,0,0.5); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; margin-right: 15px; }
+
+        .logo { color: var(--red); font-weight: 900; font-size: 22px; flex-grow: 1; }
 
         /* ГЛАВНЫЙ БАННЕР */
-        .hero { width: 100%; height: 75vh; background: linear-gradient(to top, var(--bg), transparent 60%), url('main_hero.jpg') center top; background-size: cover; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 30px; text-align: center; }
-        .hero-title { font-size: 40px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
+        .hero { 
+            width: 100%; height: 70vh; 
+            background: linear-gradient(to top, var(--bg), transparent 50%), url('https://image.tmdb.org/t/p/original/mBaXZ95O2vS7AyvyS0mO6qyZdn6.jpg') center top; 
+            background-size: cover; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 30px; 
+        }
+        .hero-title { font-size: 38px; font-weight: 900; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
 
         /* КНОПКИ */
-        .btn-play { background: #fff; color: #000; border: none; padding: 12px 30px; border-radius: 4px; font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 16px; cursor: pointer; }
-        .btn-list { background: rgba(81, 81, 81, 0.6); color: #fff; border: none; padding: 12px 20px; border-radius: 4px; font-weight: 700; backdrop-filter: blur(10px); cursor: pointer; }
+        .btn-play { background: #fff; color: #000; border: none; padding: 12px 25px; border-radius: 4px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .btn-list { background: rgba(255, 255, 255, 0.2); color: #fff; border: none; padding: 12px 15px; border-radius: 4px; backdrop-filter: blur(10px); }
 
-        /* ЛЕНТА ФИЛЬМОВ */
+        /* ЛЕНТА */
         .row-title { padding: 20px 20px 10px; font-size: 18px; font-weight: 700; }
-        .movie-row { display: flex; gap: 10px; overflow-x: auto; padding: 0 20px 20px; scrollbar-width: none; }
-        .movie-card { min-width: 120px; height: 180px; background: var(--card); border-radius: 6px; background-size: cover; background-position: center; flex-shrink: 0; }
-
-        /* ЭКРАН О ФИЛЬМЕ */
-        .movie-details-hero { width: 100%; height: 250px; background-size: cover; position: relative; }
-        .back-btn { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.5); padding: 8px; border-radius: 50%; }
-        .details-content { padding: 20px; }
+        .movie-row { display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 20px; scrollbar-width: none; }
+        .movie-card { min-width: 130px; height: 190px; background: var(--card); border-radius: 8px; background-size: cover; background-position: center; flex-shrink: 0; }
 
         /* СЕТКА МЕСТ */
-        .grid { display: flex; flex-direction: column; gap: 8px; align-items: center; padding: 20px; }
+        .grid { display: flex; flex-direction: column; gap: 8px; align-items: center; padding: 20px; margin-top: 60px; }
         .row { display: flex; gap: 6px; }
-        .seat { width: 30px; height: 30px; border: 1px solid #333; border-radius: 4px; background: #111; }
-        .seat.selected { background: var(--red); border-color: var(--red); }
+        .seat { width: 32px; height: 32px; border: 1.5px solid #333; border-radius: 6px; background: #111; }
+        .seat.selected { background: var(--red); border-color: var(--red); box-shadow: 0 0 10px var(--red); }
         .seat.occupied { opacity: 0.2; }
 
-        /* ОКНО ОПЛАТЫ (MODAL) */
+        /* MODAL */
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 1000; }
-        .modal { position: fixed; bottom: -100%; left: 0; width: 100%; background: #181818; border-radius: 20px 20px 0 0; padding: 30px 20px; transition: 0.4s; z-index: 1001; text-align: center; border-top: 1px solid #333; box-sizing: border-box;}
+        .modal { position: fixed; bottom: -100%; left: 0; width: 100%; background: #181818; border-radius: 20px 20px 0 0; padding: 30px 24px; transition: 0.4s; z-index: 1001; text-align: center; box-sizing: border-box; }
         .modal.active { bottom: 0; }
         .overlay.active { display: block; }
 
-        /* NAV */
-        .nav { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 10px 0 30px; background: #000; border-top: 1px solid #222; }
-        .nav-item { color: #888; font-size: 10px; text-align: center; }
+        /* FOOTER NAV */
+        .nav { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 12px 0 30px; background: #000; border-top: 1px solid #222; z-index: 90; }
+        .nav-item { color: #888; font-size: 10px; text-align: center; cursor: pointer; }
         .nav-item.active { color: #fff; }
     </style>
 </head>
 <body>
 
     <div id="home" class="screen active">
-        <div class="header">
+        <div class="top-bar">
             <div class="logo">CinéCity</div>
             <i data-lucide="search"></i>
         </div>
+        
         <div class="hero">
-            <h1 class="hero-title">Дюна 2</h1>
+            <h1 class="hero-title">ДЮНА 2</h1>
             <div style="display: flex; gap: 10px;">
-                <button class="btn-play" onclick="openDetails('main_hero.jpg', 'Дюна: Часть вторая')"><i data-lucide="play" fill="black"></i> Смотреть</button>
+                <button class="btn-play" onclick="openDetails('https://image.tmdb.org/t/p/original/mBaXZ95O2vS7AyvyS0mO6qyZdn6.jpg', 'Дюна: Часть вторая')">
+                    <i data-lucide="play" fill="black"></i> Билеты
+                </button>
                 <button class="btn-list"><i data-lucide="plus"></i></button>
             </div>
         </div>
-        <div class="row-title">Сейчас в кино</div>
+
+        <div class="row-title">Популярно в Глодянах</div>
         <div class="movie-row">
             <div class="movie-card" style="background-image: url('film1.jpg')" onclick="openDetails('film1.jpg', 'Оппенгеймер')"></div>
             <div class="movie-card" style="background-image: url('film2.jpg')" onclick="openDetails('film2.jpg', 'Бэтмен')"></div>
             <div class="movie-card" style="background-image: url('film3.jpg')" onclick="openDetails('film3.jpg', 'Джон Уик 4')"></div>
             <div class="movie-card" style="background-image: url('film4.jpg')" onclick="openDetails('film4.jpg', 'Человек-паук')"></div>
         </div>
+
         <div class="nav">
             <div class="nav-item active"><i data-lucide="home"></i><br>Главная</div>
-            <div class="nav-item"><i data-lucide="play-square"></i><br>New</div>
-            <div class="nav-item"><i data-lucide="user"></i><br>Мой Ciné</div>
+            <div class="nav-item"><i data-lucide="compass"></i><br>Обзор</div>
+            <div class="nav-item"><i data-lucide="user"></i><br>Профиль</div>
         </div>
     </div>
 
     <div id="details" class="screen">
-        <div id="detailsHero" class="movie-details-hero">
+        <div class="top-bar">
             <div class="back-btn" onclick="showScreen('home')"><i data-lucide="arrow-left"></i></div>
+            <div class="logo">CinéCity</div>
         </div>
-        <div class="details-content">
-            <h1 id="detailsTitle" style="margin: 0 0 10px;">Название фильма</h1>
-            <div style="color: #46d369; font-weight: 700; margin-bottom: 15px;">98% совпадение</div>
-            <p style="color: #a3a3a3; line-height: 1.5; font-size: 14px;">Эксклюзивная премьера в кинотеатре Глодян. Погрузитесь в атмосферу большого кино на самом большом экране города.</p>
-            <button class="btn-play" style="width: 100%; justify-content: center; margin-top: 20px;" onclick="showScreen('booking')">Забронировать места</button>
+        <div id="detImg" style="width: 100%; height: 300px; background-size: cover; background-position: center; margin-top: 60px;"></div>
+        <div style="padding: 24px;">
+            <h1 id="detTitle" style="margin-bottom: 10px;">Название</h1>
+            <div style="color: #46d369; font-weight: 700; margin-bottom: 15px;">Премьера недели</div>
+            <p style="color: #888; font-size: 15px; line-height: 1.6;">Захватывающий сюжет и невероятные спецэффекты. Не пропустите показ в нашем кинотеатре!</p>
+            <button class="btn-play" style="width: 100%; justify-content: center; margin-top: 30px; background: var(--red); color: white;" onclick="showScreen('booking')">Выбрать места</button>
         </div>
     </div>
 
     <div id="booking" class="screen">
-        <div style="padding: 20px; display: flex; align-items: center; gap: 15px;">
-            <i data-lucide="arrow-left" onclick="showScreen('details')"></i>
-            <span style="font-weight: 700;">Выберите места</span>
+        <div class="top-bar">
+            <div class="back-btn" onclick="showScreen('details')"><i data-lucide="arrow-left"></i></div>
+            <span style="font-weight: 700;">Бронирование</span>
         </div>
-        <div style="width: 80%; height: 4px; background: var(--red); margin: 20px auto; border-radius: 10px; box-shadow: 0 0 15px var(--red);"></div>
-        <div id="seatsGrid" class="grid"></div>
-        <div style="margin-top: auto; padding: 20px 20px 40px; background: #121212; display: flex; justify-content: space-between; align-items: center;">
+        <div class="grid" id="seatsGrid"></div>
+        <div style="position: fixed; bottom: 0; width: 100%; padding: 20px 24px 40px; background: #121212; border-top: 1px solid #333; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
             <div>
-                <div style="font-size: 12px; color: #888;">Сумма</div>
+                <div style="font-size: 12px; color: #888;">К оплате</div>
                 <div style="font-size: 24px; font-weight: 900;">$<span id="price">0</span></div>
             </div>
-            <button class="btn-play" style="background: var(--red); color: #fff; border-radius: 8px;" onclick="openModal()">Купить</button>
+            <button class="btn-play" style="background: var(--red); color: white; padding: 15px 35px;" onclick="openModal()">Купить</button>
         </div>
     </div>
 
     <div id="overlay" class="overlay" onclick="closeModal()"></div>
     <div id="payModal" class="modal">
-        <i data-lucide="check-circle" size="48" color="#46d369" style="margin-bottom: 15px;"></i>
-        <h2>Подтверждение</h2>
-        <p style="color: #888; font-size: 14px; margin-bottom: 25px;">Вы выбрали билеты в CinéCity Glodeni. Сумма к оплате будет списана с вашей карты.</p>
-        <button class="btn-play" style="width: 100%; justify-content: center; background: var(--red); color: #fff;" onclick="alert('Оплата прошла!'); location.reload();">Оплатить сейчас</button>
+        <div style="width: 50px; height: 5px; background: #333; border-radius: 10px; margin: -15px auto 25px;"></div>
+        <h2>Оплата билетов</h2>
+        <p style="color: #888; margin-bottom: 30px;">Сумма будет списана с вашей основной карты.</p>
+        <button class="btn-play" style="width: 100%; justify-content: center; background: white; color: black;" onclick="alert('Оплачено!'); location.reload();">Подтвердить</button>
     </div>
 
     <script>
@@ -126,11 +138,12 @@
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
         }
 
         function openDetails(img, title) {
-            document.getElementById('detailsHero').style.backgroundImage = `url('${img}')`;
-            document.getElementById('detailsTitle').innerText = title;
+            document.getElementById('detImg').style.backgroundImage = `url('${img}')`;
+            document.getElementById('detTitle').innerText = title;
             showScreen('details');
         }
 
@@ -144,10 +157,10 @@
             document.getElementById('overlay').classList.remove('active');
         }
 
-        // Генерация мест
+        // Сетка мест
         const grid = document.getElementById('seatsGrid');
         let total = 0;
-        for (let r = 0; r < 6; r++) {
+        for (let r = 0; r < 7; r++) {
             const row = document.createElement('div');
             row.className = 'row';
             for (let s = 0; s < 8; s++) {
