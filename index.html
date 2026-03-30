@@ -4,171 +4,261 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CinéCity Glodeni</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
+            /* Палитра цветов из Дизайн-Системы FLAR */
             --bg-black: #000000;
             --main-violet: #8454CC;
+            --main-red: #AE0508;
             --text-white: #FFFFFF;
             --text-gray: #666666;
+            --input-gray: #111111;
             --border-gray: #1C1C1E;
         }
 
         body { 
             margin: 0; background: var(--bg-black); font-family: 'Inter', sans-serif; 
-            color: var(--text-white); overflow: hidden; -webkit-font-smoothing: antialiased; 
+            color: var(--text-white); overflow-x: hidden; -webkit-font-smoothing: antialiased; 
         }
         
-        .screen { width: 100%; height: 100vh; display: none; flex-direction: column; position: relative; }
+        .screen { width: 100%; min-height: 100vh; display: none; flex-direction: column; }
         .screen.active { display: flex; }
+        
+        /* КНОПКИ В СТИЛЕ FLAR */
+        .btn-violet { 
+            background: var(--main-violet); color: var(--text-white); border: none; 
+            padding: 16px 20px; border-radius: 12px; font-weight: 600; font-size: 15px; 
+            cursor: pointer; transition: 0.2s ease; width: calc(100% - 32px); margin: 20px 16px;
+        }
+        .btn-violet:active { transform: scale(0.97); background: #6c42a8; }
+        
+        /* НАВИГАЦИЯ (НИЖНЯЯ) - КОНТУРНЫЕ ИКОНКИ */
+        .bottom-nav { 
+            position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; 
+            align-items: center; padding: 12px 0 30px; background: rgba(0,0,0,0.9); 
+            border-top: 0.5px solid var(--border-gray); backdrop-filter: blur(20px); 
+        }
+        .nav-item { font-size: 10px; color: var(--text-gray); cursor: pointer; text-align: center; }
+        .nav-item.active { color: var(--main-violet); }
+        .nav-item .icon { font-size: 20px; display: block; margin-bottom: 4px; }
 
-        /* --- ЭКРАН 0: ONBOARDING (НОВЫЙ) --- */
-        #onboarding {
-            background: url('hero.jpg') no-repeat center top;
-            background-size: cover;
+        /* --- ЭКРАН 1: ГЛАВНЫЙ (КРАСНЫЙ СПАРРОУ) --- */
+        .hero-banner { 
+            width: 100%; height: 350px; background-size: cover; background-position: center; 
+            position: relative; 
         }
-        .onboarding-content {
-            margin-top: auto;
-            padding: 40px 24px 60px;
-            background: linear-gradient(to top, var(--bg-black) 70%, transparent);
-            text-align: center;
+        .hero-gradient {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;
+            background: linear-gradient(to top, var(--bg-black), transparent);
         }
-        .onboarding-title { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
-        .onboarding-text { font-size: 14px; color: var(--text-gray); margin-bottom: 40px; line-height: 1.5; }
+        
+        .hero-details { padding: 16px; text-align: center; }
+        .film-tags { display: flex; gap: 8px; justify-content: center; margin: 10px 0 20px; font-size: 10px; color: var(--text-gray); }
+        .film-tag { border: 1px solid var(--border-gray); padding: 5px 10px; border-radius: 6px; }
+        
+        .movie-list-item { 
+            width: 160px; height: 200px; border-radius: 12px; background-size: cover; 
+            margin: 20px auto 10px; border: 1px solid var(--border-gray); 
+        }
+        .movie-label-small { text-align: center; color: var(--text-gray); font-size: 12px; margin-top: 5px; }
 
-        /* --- ОБЩИЕ СТИЛИ КНОПОК --- */
-        .btn-main { 
-            background: var(--main-violet); color: #fff; border: none; 
-            padding: 18px; border-radius: 16px; font-weight: 700; font-size: 16px; 
-            cursor: pointer; width: 100%; transition: 0.2s;
-        }
-        .btn-main:active { transform: scale(0.96); opacity: 0.9; }
+        /* --- ЭКРАН 2: ВЫБОР МЕСТ (50 ШТУК + ЦВЕТА FLAR) --- */
+        .header-alt { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .alt-title { font-size: 18px; font-weight: 600; text-align: center; flex: 1; }
+        .back-icon { font-size: 24px; color: var(--main-violet); cursor: pointer; }
 
-        /* --- ЭКРАН 1: ГЛАВНАЯ --- */
-        .header { padding: 20px 16px; display: flex; justify-content: space-between; align-items: center; }
-        .hero-card { 
-            margin: 0 16px; height: 300px; border-radius: 24px; 
-            background: url('hero.jpg') center; background-size: cover;
-            position: relative; overflow: hidden;
-        }
-        .hero-card-info {
-            position: absolute; bottom: 0; width: 100%; padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            box-sizing: border-box;
-        }
-
-        /* --- ЭКРАН 2: ВЫБОР МЕСТ --- */
-        .seats-container { padding: 20px; flex-grow: 1; overflow-y: auto; }
         .cinema-screen { 
-            width: 80%; height: 2px; background: var(--main-violet); margin: 20px auto;
-            box-shadow: 0 4px 15px rgba(132, 84, 204, 0.6);
+            width: 70%; height: 2px; background: var(--main-violet); margin: 30px auto 10px; 
+            box-shadow: 0 5px 20px rgba(132, 84, 204, 0.5); 
         }
-        .seats-grid { display: grid; gap: 8px; justify-content: center; margin-top: 30px; }
-        .seat-row { display: flex; gap: 8px; }
-        .seat { width: 28px; height: 28px; background: #1C1C1E; border-radius: 6px; border: 1px solid #333; }
-        .seat.selected { background: var(--main-violet); border-color: var(--main-violet); }
-        .seat.reserved { background: #333; opacity: 0.3; }
+        
+        .seats-grid-alt { 
+            padding: 20px; display: flex; flex-direction: column; gap: 6px; 
+            align-items: center; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; 
+        }
+        .seat-row { display: flex; gap: 6px; }
+        .seat-alt { 
+            width: 28px; height: 28px; background: #2A2A2A; border-radius: 6px; 
+            cursor: pointer; transition: 0.1s; flex-shrink: 0; border: 1px solid var(--border-gray);
+        }
+        .seat-alt:active { transform: scale(0.9); }
+        .seat-alt.selected { background: var(--main-violet); border-color: var(--main-violet); }
+        .seat-alt.reserved { background: var(--text-gray); border-color: var(--text-gray); cursor: not-allowed; }
 
-        /* НИЖНЯЯ ПАНЕЛЬ ОПЛАТЫ */
-        .bottom-bar {
-            padding: 20px 24px 40px;
-            background: #050505; border-top: 1px solid var(--border-gray);
-            display: flex; justify-content: space-between; align-items: center;
+        .date-picker { padding: 10px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+        .date-item { 
+            width: 50px; flex-shrink: 0; text-align: center; padding: 12px 8px; 
+            border: 1px solid var(--border-gray); border-radius: 12px; cursor: pointer; color: var(--text-gray); 
         }
+        .date-item.active { border-color: var(--main-violet); color: var(--text-white); background: rgba(132, 84, 204, 0.1); }
+        .date-day { font-size: 12px; margin-bottom: 4px; }
+        .date-num { font-size: 18px; font-weight: 700; }
 
-        /* НАВИГАЦИЯ (ДЛЯ ГЛАВНОЙ) */
-        .nav {
-            position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around;
-            padding: 15px 0 30px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+        .time-picker { display: flex; gap: 8px; padding: 10px 16px 30px; overflow-x: auto; scrollbar-width: none; }
+        .time-btn { 
+            background: var(--input-gray); border: 1px solid var(--border-gray); color: var(--text-gray); 
+            padding: 10px 18px; border-radius: 10px; font-size: 12px; cursor: pointer; transition: 0.2s;
         }
-        .nav-dot { width: 6px; height: 6px; background: var(--text-gray); border-radius: 50%; }
-        .nav-dot.active { background: var(--main-violet); box-shadow: 0 0 10px var(--main-violet); }
+        .time-btn.active { border-color: var(--main-violet); color: var(--text-white); background: rgba(132, 84, 204, 0.1); }
+        
+        .checkout-bar { 
+            margin-top: auto; padding: 16px 20px 100px; display: flex; 
+            justify-content: space-between; align-items: center; border-top: 0.5px solid var(--border-gray); 
+        }
+        .price-label { font-size: 12px; color: var(--text-gray); margin-bottom: 3px; }
+        .price-value { font-size: 20px; font-weight: 800; color: var(--text-white); }
+        
+        /* Краткие заголовки разделов */
+        .section-header { padding: 16px; font-size: 12px; color: var(--text-gray); font-weight: 500; text-align: center; text-transform: uppercase;}
     </style>
 </head>
 <body>
 
-    <div id="onboarding" class="screen active">
-        <div class="onboarding-content">
-            <h1 class="onboarding-title">Enjoy your favorite movie</h1>
-            <p class="onboarding-text">The best cinema app in Glodeni. <br>Book your tickets in seconds.</p>
-            <button class="btn-main" onclick="goTo('home')">Get Started</button>
+    <div id="home" class="screen active">
+        <div class="hero-banner" style="background-image: url('hero.jpg');">
+            <div class="hero-gradient"></div>
         </div>
-    </div>
-
-    <div id="home" class="screen">
-        <div class="header">
-            <span style="font-weight: 700; font-size: 20px;">CinéCity</span>
-            <div style="width: 32px; height: 32px; background: #222; border-radius: 50%;"></div>
-        </div>
-        <div class="hero-card" onclick="goTo('seats')">
-            <div class="hero-card-info">
-                <div style="font-size: 12px; color: var(--main-violet); font-weight: 700; margin-bottom: 4px;">NOW SHOWING</div>
-                <div style="font-size: 22px; font-weight: 800;">Red Sparrow</div>
+        
+        <div class="hero-details">
+            <div style="font-size: 12px; color: var(--text-gray);">NEW MOVIE</div>
+            <div style="font-size: 28px; font-weight: 800; margin: 4px 0 10px; font-family: 'Inter', sans-serif;">Red Sparrow</div>
+            
+            <div class="film-tags">
+                <span class="film-tag">Action</span>
+                <span class="film-tag">Drama</span>
+                <span class="film-tag">Thriller</span>
             </div>
         </div>
-        <div style="padding: 24px 16px;">
-            <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Coming Soon</div>
-            <div style="width: 140px; height: 180px; background: #111; border-radius: 20px; border: 1px solid #222;"></div>
+        
+        <button class="btn-violet" onclick="showSeats()">Buy tickets</button>
+        
+        <div class="section-header">Free recommendations</div>
+
+        <div style="padding: 10px;">
+            <div class="movie-list-item" style="background-image: url('poster_small.jpg');"></div>
+            <div class="movie-label-small">Red Sparrow</div>
         </div>
-        <div class="nav">
-            <div class="nav-dot active"></div>
-            <div class="nav-dot"></div>
-            <div class="nav-dot"></div>
-            <div class="nav-dot"></div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active"><span class="icon">🏠</span>Movie</div>
+            <div class="nav-item"><span class="icon">🔍</span>Search</div>
+            <div class="nav-item"><span class="icon">🎫</span>Tickets</div>
+            <div class="nav-item"><span class="icon">👤</span>Profile</div>
         </div>
     </div>
 
     <div id="seats" class="screen">
-        <div class="header">
-            <span onclick="goTo('home')" style="color: var(--main-violet); font-weight: 600;">← Back</span>
-            <span style="font-weight: 700;">Select Seats</span>
-            <div style="width: 40px;"></div>
+        <div class="header-alt">
+            <div class="back-icon" onclick="showHome()">←</div>
+            <div class="alt-title">Red Sparrow</div>
+            <div style="width: 24px;"></div>
         </div>
+        
         <div class="cinema-screen"></div>
-        <div class="seats-container">
-            <div class="seats-grid" id="grid"></div>
-        </div>
-        <div class="bottom-bar">
-            <div>
-                <div style="font-size: 12px; color: var(--text-gray);">Total Price</div>
-                <div style="font-size: 20px; font-weight: 800;">$<span id="price">0</span></div>
+        <div style="text-align: center; font-size: 10px; color: #333; margin-top: 15px;">SCREEN</div>
+        
+        <div class="seats-grid-alt" id="seatsGrid">
             </div>
-            <button class="btn-main" style="width: auto; padding: 14px 30px; border-radius: 12px;">Buy</button>
+        
+        <div class="date-picker">
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">05</div></div>
+            <div class="date-item active"><div class="date-day">May</div><div class="date-num">06</div></div>
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">07</div></div>
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">08</div></div>
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">09</div></div>
         </div>
+        
+        <div class="time-picker">
+            <button class="time-btn">10:40</button>
+            <button class="time-btn">13:30</button>
+            <button class="time-btn active">17:10</button>
+            <button class="time-btn">19:30</button>
+        </div>
+        
+        <div class="checkout-bar">
+            <div>
+                <div class="price-label"><span id="seatsCount">0</span> tickets</div>
+                <div class="price-value">$<span id="totalPrice">0.00</span></div>
+            </div>
+            <button class="btn-violet" style="margin: 0; padding: 14px 25px; border-radius: 12px;">Confirm choice</button>
+        </div>
+        
     </div>
 
     <script>
-        function goTo(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        // Функция переключения экранов
+        function showSeats() {
+            document.getElementById('home').classList.remove('active');
+            document.getElementById('seats').classList.add('active');
+            window.scrollTo(0,0);
+        }
+        function showHome() {
+            document.getElementById('seats').classList.remove('active');
+            document.getElementById('home').classList.add('active');
         }
 
-        // Генерация 50 мест
-        const grid = document.getElementById('grid');
-        let total = 0;
-        for (let r = 0; r < 5; r++) {
-            const row = document.createElement('div');
-            row.className = 'seat-row';
-            for (let s = 0; s < 10; s++) {
-                if (s === 5) { // Проход
-                    const space = document.createElement('div');
-                    space.style.width = '12px';
-                    row.appendChild(space);
+        // ГЕНЕРАЦИЯ 50 МЕСТ (5 рядов по 10 мест)
+        const grid = document.getElementById('seatsGrid');
+        const pricePerSeat = 25.00;
+        let selectedSeatsCount = 0;
+
+        for (let row = 0; row < 5; row++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'seat-row';
+
+            for (let seat = 0; seat < 10; seat++) {
+                // Добавляем проход посередине
+                if (seat === 5) {
+                    const spacer = document.createElement('div');
+                    spacer.style.width = '15px';
+                    rowDiv.appendChild(spacer);
                 }
-                const seat = document.createElement('div');
-                seat.className = 'seat';
-                if (Math.random() < 0.2) seat.classList.add('reserved');
-                else {
-                    seat.onclick = function() {
+
+                const seatDiv = document.createElement('div');
+                seatDiv.className = 'seat-alt';
+                
+                // Случайным образом делаем несколько мест забронированными
+                if (Math.random() < 0.2) { 
+                    seatDiv.classList.add('reserved');
+                } else {
+                    // Обработка нажатия на место
+                    seatDiv.onclick = function() {
                         this.classList.toggle('selected');
-                        total += this.classList.contains('selected') ? 25 : -25;
-                        document.getElementById('price').innerText = total;
-                    }
+                        updatePrice(this.classList.contains('selected'));
+                    };
                 }
-                row.appendChild(seat);
+                rowDiv.appendChild(seatDiv);
             }
-            grid.appendChild(row);
+            grid.appendChild(rowDiv);
         }
+
+        // Функция обновления цены
+        function updatePrice(isSelected) {
+            selectedSeatsCount += isSelected ? 1 : -1;
+            document.getElementById('seatsCount').innerText = selectedSeatsCount;
+            document.getElementById('totalPrice').innerText = (selectedSeatsCount * pricePerSeat).toFixed(2);
+        }
+
+        // Логика активных кнопок времени
+        const timeBtns = document.querySelectorAll('.time-picker .time-btn');
+        timeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                timeBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Логика активных дат
+        const dateItems = document.querySelectorAll('.date-picker .date-item');
+        dateItems.forEach(item => {
+            item.addEventListener('click', function() {
+                dateItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
