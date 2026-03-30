@@ -28,17 +28,18 @@
         }
         .btn-black.active { border-color: #D20F16; color: #fff; background: rgba(210, 15, 22, 0.1); }
 
-        /* НАВИГАЦИЯ (НИЖНЯЯ) */
+        /* НАВИГАЦИЯ (НИЖНЯЯ - ПО НОВОМУ МАКЕТУ) */
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; 
             align-items: center; padding: 12px 0 20px; background: rgba(5,5,5,0.9); 
             border-top: 0.5px solid #111; backdrop-filter: blur(15px); border-radius: 24px 24px 0 0; 
         }
-        .nav-item { font-size: 18px; color: #555; cursor: pointer; text-align: center; font-size: 9px; }
+        .nav-item { font-size: 9px; color: #555; cursor: pointer; text-align: center; font-weight: 500;}
         .nav-item.active { color: #D20F16; font-weight: 600; }
-        .nav-item .icon { font-size: 18px; display: block; margin-bottom: 2px; }
+        .nav-item .icon-dot { width: 6px; height: 6px; background: #555; border-radius: 50%; display: block; margin: 0 auto 4px; transition: 0.3s; }
+        .nav-item.active .icon-dot { background: #D20F16; transform: scale(1.5); }
 
-        /* --- ЭКРАН 1: ГЛАВНЫЙ --- */
+        /* --- ЭКРАН 1: ГЛАВНЫЙ (КРАСНЫЙ СПАРРОУ) --- */
         .hero-banner { width: 100%; height: 350px; background-size: cover; background-position: center; }
         .hero-details { padding: 16px; margin-top: -30px; border-radius: 20px; }
         .film-tags { display: flex; gap: 6px; justify-content: center; margin: 10px 0 20px; font-size: 9px; color: #888; }
@@ -49,7 +50,7 @@
         }
         .movie-label-small { text-align: center; color: #999; font-size: 11px; margin-top: 5px; }
 
-        /* --- ЭКРАН 2: ВЫБОР МЕСТ (ПО НОВОМУ МАКЕТУ) --- */
+        /* --- ЭКРАН 2: ВЫБОР МЕСТ (50 ШТУК + ДИЗАЙН) --- */
         .header-alt { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
         .alt-title { font-size: 16px; font-weight: 600; text-align: center; flex: 1; }
         .back-icon { font-size: 20px; color: #D20F16; cursor: pointer; }
@@ -58,9 +59,13 @@
             width: 70%; height: 1.5px; background: #D20F16; margin: 30px auto 10px; 
             box-shadow: 0 5px 20px rgba(210, 15, 22, 0.4); 
         }
-        .seats-grid-alt { padding: 20px; display: flex; flex-direction: column; gap: 8px; align-items: center; margin-bottom: 20px; }
-        .seat-row { display: flex; gap: 8px; }
-        .seat-alt { width: 32px; height: 32px; background: #2A2A2A; border-radius: 8px; cursor: pointer; transition: 0.1s; }
+        
+        .seats-grid-alt { 
+            padding: 20px; display: flex; flex-direction: column; gap: 6px; 
+            align-items: center; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; 
+        }
+        .seat-row { display: flex; gap: 6px; }
+        .seat-alt { width: 26px; height: 26px; background: #2A2A2A; border-radius: 6px; cursor: pointer; transition: 0.1s; flex-shrink: 0; }
         .seat-alt:active { transform: scale(0.9); }
         .seat-alt.selected { background: #D20F16; }
 
@@ -73,7 +78,8 @@
         .date-day { font-size: 11px; margin-bottom: 4px; }
         .date-num { font-size: 16px; font-weight: 700; }
 
-        .time-picker { display: flex; gap: 8px; padding: 10px; }
+        .time-picker { display: flex; gap: 8px; padding: 10px; overflow-x: auto; scrollbar-width: none; }
+        
         .checkout-bar { 
             margin-top: auto; padding: 16px 20px 80px; display: flex; 
             justify-content: space-between; align-items: center; border-top: 0.5px solid #111; 
@@ -85,7 +91,7 @@
 <body>
 
     <div id="home" class="screen active">
-        <div class="hero-banner" style="background-image: url('https://image.tmdb.org/t/p/original/b34X4r8O2H1337M9E8M8r939N0.jpg');"></div>
+        <div class="hero-banner" style="background-image: url('hero.jpg');"></div>
         
         <div class="hero-details">
             <div style="font-size: 12px; color: #888; text-align: center;">NEW - MOVIE</div>
@@ -102,16 +108,16 @@
             </div>
             
             <div style="padding: 10px;">
-                <div class="movie-list-item" style="background-image: url('https://image.tmdb.org/t/p/w500/2G0Qo1O20P0Qo1P0Qo1P0Qo1P.jpg');"></div>
+                <div class="movie-list-item" style="background-image: url('poster_small.jpg');"></div>
                 <div class="movie-label-small">Red Sparrow</div>
             </div>
         </div>
 
         <div class="bottom-nav">
-            <div class="nav-item active"><span class="icon">🏠</span>Movie</div>
-            <div class="nav-item"><span class="icon">🔍</span>Search</div>
-            <div class="nav-item"><span class="icon">🎫</span>Tickets</div>
-            <div class="nav-item"><span class="icon">👤</span>Profile</div>
+            <div class="nav-item active"><span class="icon-dot"></span>Movie</div>
+            <div class="nav-item"><span class="icon-dot"></span>Search</div>
+            <div class="nav-item"><span class="icon-dot"></span>Tickets</div>
+            <div class="nav-item"><span class="icon-dot"></span>Profile</div>
         </div>
     </div>
 
@@ -119,58 +125,34 @@
         <div class="header-alt">
             <div class="back-icon" onclick="showHome()">←</div>
             <div class="alt-title">Red Sparrow</div>
-            <div style="width: 20px;"></div> </div>
+            <div style="width: 20px;"></div>
+        </div>
         
         <div class="cinema-screen"></div>
         <div style="text-align: center; font-size: 10px; color: #333; margin-top: 15px;">SCREEN</div>
         
-        <div class="seats-grid-alt">
-            <div class="seat-row">
-                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-                <div class="seat-alt selected" onclick="this.classList.toggle('selected')"></div> <div style="width: 20px;"></div> <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-            </div>
-            <div class="seat-row">
-                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-                <div style="width: 20px;"></div> <div class="seat-alt selected" onclick="this.classList.toggle('selected')"></div> <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
-            </div>
+        <div class="seats-grid-alt" id="seatsGrid">
             </div>
         
         <div class="date-picker">
-            <div class="date-item">
-                <div class="date-day">May</div>
-                <div class="date-num">05</div>
-            </div>
-            <div class="date-item active"> <div class="date-day">May</div>
-                <div class="date-num">06</div>
-            </div>
-            <div class="date-item">
-                <div class="date-day">May</div>
-                <div class="date-num">07</div>
-            </div>
-            <div class="date-item">
-                <div class="date-day">May</div>
-                <div class="date-num">08</div>
-            </div>
-            <div class="date-item">
-                <div class="date-day">May</div>
-                <div class="date-num">09</div>
-            </div>
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">05</div></div>
+            <div class="date-item active"><div class="date-day">May</div><div class="date-num">06</div></div>
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">07</div></div>
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">08</div></div>
+            <div class="date-item"><div class="date-day">May</div><div class="date-num">09</div></div>
         </div>
         
         <div class="time-picker">
             <button class="btn-black">10:40</button>
             <button class="btn-black">13:30</button>
-            <button class="btn-black active">17:10</button> <button class="btn-black">19:30</button>
+            <button class="btn-black active">17:10</button>
+            <button class="btn-black">19:30</button>
         </div>
         
         <div class="checkout-bar">
             <div>
-                <div class="price-label">2 tickets</div>
-                <div class="price-value">$50.00</div>
+                <div class="price-label"><span id="seatsCount">0</span> tickets</div>
+                <div class="price-value">$<span id="totalPrice">0.00</span></div>
             </div>
             <button class="btn-red" style="border-radius: 12px; padding: 12px 30px;">Buy tickets</button>
         </div>
@@ -178,6 +160,7 @@
     </div>
 
     <script>
+        // Функция переключения экранов
         function showSeats() {
             document.getElementById('home').classList.remove('active');
             document.getElementById('seats').classList.add('active');
@@ -187,8 +170,45 @@
             document.getElementById('seats').classList.remove('active');
             document.getElementById('home').classList.add('active');
         }
-        
-        // Магия для активных кнопок времени
+
+        // ГЕНЕРАЦИЯ 50 МЕСТ (5 рядов по 10 мест)
+        const grid = document.getElementById('seatsGrid');
+        const pricePerSeat = 25.00;
+        let selectedSeatsCount = 0;
+
+        for (let row = 0; row < 5; row++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'seat-row';
+
+            for (let seat = 0; seat < 10; seat++) {
+                // Добавляем проход посередине
+                if (seat === 5) {
+                    const spacer = document.createElement('div');
+                    spacer.style.width = '15px';
+                    rowDiv.appendChild(spacer);
+                }
+
+                const seatDiv = document.createElement('div');
+                seatDiv.className = 'seat-alt';
+                
+                // Обработка нажатия на место
+                seatDiv.onclick = function() {
+                    this.classList.toggle('selected');
+                    updatePrice(this.classList.contains('selected'));
+                };
+                rowDiv.appendChild(seatDiv);
+            }
+            grid.appendChild(rowDiv);
+        }
+
+        // Функция обновления цены
+        function updatePrice(isSelected) {
+            selectedSeatsCount += isSelected ? 1 : -1;
+            document.getElementById('seatsCount').innerText = selectedSeatsCount;
+            document.getElementById('totalPrice').innerText = (selectedSeatsCount * pricePerSeat).toFixed(2);
+        }
+
+        // Логика активных кнопок времени
         const timeBtns = document.querySelectorAll('.time-picker .btn-black');
         timeBtns.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -197,7 +217,7 @@
             });
         });
         
-        // Магия для дат
+        // Логика активных дат
         const dateItems = document.querySelectorAll('.date-picker .date-item');
         dateItems.forEach(item => {
             item.addEventListener('click', function() {
