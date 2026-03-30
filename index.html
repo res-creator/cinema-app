@@ -4,102 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CinéCity Glodeni</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { margin: 0; background: #0d0d0d; font-family: 'Outfit', sans-serif; color: #fff; overflow-x: hidden; }
+        body { 
+            margin: 0; background: #000; font-family: 'Montserrat', sans-serif; 
+            color: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; 
+        }
         .screen { width: 100%; min-height: 100vh; display: none; flex-direction: column; }
         .screen.active { display: flex; }
         
-        /* Шапка */
-        .home-header { padding: 20px 16px; display: flex; justify-content: space-between; align-items: center; }
-        .home-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: #c9a84c; }
-        .home-avatar { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #c9a84c; display: flex; align-items: center; justify-content: center; color: #c9a84c; }
-        
-        /* Главный баннер */
-        .hero-img { 
-            width: 100%; height: 250px; 
-            background: linear-gradient(to bottom, transparent, #0d0d0d), url('https://w0.peakpx.com/wallpaper/424/303/wallpaper-desktop-dune-2.jpg'); 
-            background-size: cover; background-position: center;
-            display: flex; align-items: flex-end; padding: 20px; box-sizing: border-box; 
+        /* КНОПКИ (КРАСНЫЕ И ЧЕРНЫЕ) */
+        .btn-red { 
+            background: #D20F16; color: #fff; border: none; padding: 14px 20px; 
+            border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.3s;
         }
-        .hero-title { font-family: 'Playfair Display', serif; font-size: 28px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .btn-red:active { transform: scale(0.96); background: #b00c12; }
         
-        /* Список фильмов */
-        .section-title { padding: 20px 16px 10px; font-weight: 500; color: #ddd; }
-        .movie-row { display: flex; gap: 15px; padding: 0 16px 20px; overflow-x: auto; scrollbar-width: none; }
-        .movie-card { flex-shrink: 0; width: 130px; }
-        .movie-poster { width: 130px; height: 180px; border-radius: 12px; background-size: cover; border: 1px solid #333; }
-        
-        /* Кнопка */
-        .buy-btn { margin: 20px 16px; background: #c9a84c; color: #000; border: none; padding: 16px; border-radius: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .buy-btn:active { transform: scale(0.95); background: #b0913b; }
+        .btn-black { 
+            background: rgba(0,0,0,0.5); border: 1px solid #333; color: #999; 
+            padding: 8px 16px; border-radius: 12px; font-size: 11px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-black.active { border-color: #D20F16; color: #fff; background: rgba(210, 15, 22, 0.1); }
 
-        /* Навигация */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 15px 0; background: rgba(10,10,10,0.95); border-top: 0.5px solid #1e1e1e; backdrop-filter: blur(10px); }
-        .nav-item { font-size: 20px; cursor: pointer; opacity: 0.5; }
-        .nav-item.active { opacity: 1; color: #c9a84c; }
+        /* НАВИГАЦИЯ (НИЖНЯЯ) */
+        .bottom-nav { 
+            position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; 
+            align-items: center; padding: 12px 0 20px; background: rgba(5,5,5,0.9); 
+            border-top: 0.5px solid #111; backdrop-filter: blur(15px); border-radius: 24px 24px 0 0; 
+        }
+        .nav-item { font-size: 18px; color: #555; cursor: pointer; text-align: center; font-size: 9px; }
+        .nav-item.active { color: #D20F16; font-weight: 600; }
+        .nav-item .icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
-        /* Экран мест (простой пример) */
-        .seats-grid { padding: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; justify-items: center; }
-        .seat { width: 40px; height: 40px; background: #222; border-radius: 8px; border: 1px solid #444; }
-        .seat.selected { background: #c9a84c; }
+        /* --- ЭКРАН 1: ГЛАВНЫЙ --- */
+        .hero-banner { width: 100%; height: 350px; background-size: cover; background-position: center; }
+        .hero-details { padding: 16px; margin-top: -30px; border-radius: 20px; }
+        .film-tags { display: flex; gap: 6px; justify-content: center; margin: 10px 0 20px; font-size: 9px; color: #888; }
+        .film-tag { border: 1px solid #333; padding: 4px 8px; border-radius: 6px; }
+        .movie-list-item { 
+            width: 140px; height: 180px; border-radius: 20px; background-size: cover; 
+            margin: 0 auto 10px; border: 1px solid #222; 
+        }
+        .movie-label-small { text-align: center; color: #999; font-size: 11px; margin-top: 5px; }
+
+        /* --- ЭКРАН 2: ВЫБОР МЕСТ (ПО НОВОМУ МАКЕТУ) --- */
+        .header-alt { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .alt-title { font-size: 16px; font-weight: 600; text-align: center; flex: 1; }
+        .back-icon { font-size: 20px; color: #D20F16; cursor: pointer; }
+
+        .cinema-screen { 
+            width: 70%; height: 1.5px; background: #D20F16; margin: 30px auto 10px; 
+            box-shadow: 0 5px 20px rgba(210, 15, 22, 0.4); 
+        }
+        .seats-grid-alt { padding: 20px; display: flex; flex-direction: column; gap: 8px; align-items: center; margin-bottom: 20px; }
+        .seat-row { display: flex; gap: 8px; }
+        .seat-alt { width: 32px; height: 32px; background: #2A2A2A; border-radius: 8px; cursor: pointer; transition: 0.1s; }
+        .seat-alt:active { transform: scale(0.9); }
+        .seat-alt.selected { background: #D20F16; }
+
+        .date-picker { padding: 10px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+        .date-item { 
+            width: 50px; flex-shrink: 0; text-align: center; padding: 12px 8px; 
+            border: 1px solid #2A2A2A; border-radius: 12px; cursor: pointer; color: #666; 
+        }
+        .date-item.active { border-color: #D20F16; color: #fff; background: rgba(210, 15, 22, 0.05); }
+        .date-day { font-size: 11px; margin-bottom: 4px; }
+        .date-num { font-size: 16px; font-weight: 700; }
+
+        .time-picker { display: flex; gap: 8px; padding: 10px; }
+        .checkout-bar { 
+            margin-top: auto; padding: 16px 20px 80px; display: flex; 
+            justify-content: space-between; align-items: center; border-top: 0.5px solid #111; 
+        }
+        .price-label { font-size: 12px; color: #666; margin-bottom: 3px; }
+        .price-value { font-size: 18px; font-weight: 700; color: #fff; }
     </style>
 </head>
 <body>
 
     <div id="home" class="screen active">
-        <div class="home-header">
-            <div>
-                <div class="home-logo">CinéCity</div>
-                <div style="font-size: 11px; color: #666;">Глодяны • MD</div>
-            </div>
-            <div class="home-avatar">АН</div>
-        </div>
+        <div class="hero-banner" style="background-image: url('https://image.tmdb.org/t/p/original/b34X4r8O2H1337M9E8M8r939N0.jpg');"></div>
         
-        <div class="hero-img">
-            <div class="hero-title">Dune: Part Two</div>
-        </div>
-
-        <div class="section-title">Сейчас в кино</div>
-        <div class="movie-row">
-            <div class="movie-card">
-                <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/8GxvA9zDZ9G0QZ8vGfS0Soxp0Ac.jpg');"></div>
-                <div style="font-size: 13px; margin-top: 8px; font-weight: 500;">Oppenheimer</div>
+        <div class="hero-details">
+            <div style="font-size: 12px; color: #888; text-align: center;">NEW - MOVIE</div>
+            <div style="font-size: 24px; font-weight: 700; text-align: center; margin: 4px 0 10px;">Red Sparrow</div>
+            
+            <div class="film-tags">
+                <span class="film-tag">Action</span>
+                <span class="film-tag">Drama</span>
+                <span class="film-tag">Thriller</span>
             </div>
-            <div class="movie-card">
-                <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/7YpT707pZ86p69686868686868.jpg'); background-color: #222;"></div>
-                <div style="font-size: 13px; margin-top: 8px; font-weight: 500;">Poor Things</div>
+            
+            <div style="text-align: center; margin-bottom: 25px;">
+                <button class="btn-red" onclick="showSeats()">Buy tickets</button>
+            </div>
+            
+            <div style="padding: 10px;">
+                <div class="movie-list-item" style="background-image: url('https://image.tmdb.org/t/p/w500/2G0Qo1O20P0Qo1P0Qo1P0Qo1P.jpg');"></div>
+                <div class="movie-label-small">Red Sparrow</div>
             </div>
         </div>
-
-        <button class="buy-btn" onclick="showSeats()">Купить билет</button>
 
         <div class="bottom-nav">
-            <div class="nav-item active">🏠</div>
-            <div class="nav-item">🎬</div>
-            <div class="nav-item">🎫</div>
-            <div class="nav-item">👤</div>
+            <div class="nav-item active"><span class="icon">🏠</span>Movie</div>
+            <div class="nav-item"><span class="icon">🔍</span>Search</div>
+            <div class="nav-item"><span class="icon">🎫</span>Tickets</div>
+            <div class="nav-item"><span class="icon">👤</span>Profile</div>
         </div>
     </div>
 
     <div id="seats" class="screen">
-        <div class="home-header">
-            <div onclick="showHome()" style="cursor:pointer; color: #c9a84c;">← Назад</div>
-            <div class="home-logo">Выбор мест</div>
-            <div></div>
-        </div>
-        <div style="text-align:center; color: #666; font-size: 12px; margin-top: 20px;">ЭКРАН</div>
-        <div style="height: 4px; background: #c9a84c; margin: 10px 40px; border-radius: 2px; box-shadow: 0 5px 15px rgba(201, 168, 76, 0.3);"></div>
+        <div class="header-alt">
+            <div class="back-icon" onclick="showHome()">←</div>
+            <div class="alt-title">Red Sparrow</div>
+            <div style="width: 20px;"></div> </div>
         
-        <div class="seats-grid">
-            <div class="seat" onclick="this.classList.toggle('selected')"></div>
-            <div class="seat" onclick="this.classList.toggle('selected')"></div>
-            <div class="seat" onclick="this.classList.toggle('selected')"></div>
-            <div class="seat" onclick="this.classList.toggle('selected')"></div>
-            <div class="seat" onclick="this.classList.toggle('selected')"></div>
+        <div class="cinema-screen"></div>
+        <div style="text-align: center; font-size: 10px; color: #333; margin-top: 15px;">SCREEN</div>
+        
+        <div class="seats-grid-alt">
+            <div class="seat-row">
+                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
+                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
+                <div class="seat-alt selected" onclick="this.classList.toggle('selected')"></div> <div style="width: 20px;"></div> <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
+                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
             </div>
-
-        <button class="buy-btn" style="margin-top:auto; margin-bottom: 80px;">Подтвердить выбор</button>
+            <div class="seat-row">
+                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
+                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
+                <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
+                <div style="width: 20px;"></div> <div class="seat-alt selected" onclick="this.classList.toggle('selected')"></div> <div class="seat-alt" onclick="this.classList.toggle('selected')"></div>
+            </div>
+            </div>
+        
+        <div class="date-picker">
+            <div class="date-item">
+                <div class="date-day">May</div>
+                <div class="date-num">05</div>
+            </div>
+            <div class="date-item active"> <div class="date-day">May</div>
+                <div class="date-num">06</div>
+            </div>
+            <div class="date-item">
+                <div class="date-day">May</div>
+                <div class="date-num">07</div>
+            </div>
+            <div class="date-item">
+                <div class="date-day">May</div>
+                <div class="date-num">08</div>
+            </div>
+            <div class="date-item">
+                <div class="date-day">May</div>
+                <div class="date-num">09</div>
+            </div>
+        </div>
+        
+        <div class="time-picker">
+            <button class="btn-black">10:40</button>
+            <button class="btn-black">13:30</button>
+            <button class="btn-black active">17:10</button> <button class="btn-black">19:30</button>
+        </div>
+        
+        <div class="checkout-bar">
+            <div>
+                <div class="price-label">2 tickets</div>
+                <div class="price-value">$50.00</div>
+            </div>
+            <button class="btn-red" style="border-radius: 12px; padding: 12px 30px;">Buy tickets</button>
+        </div>
+        
     </div>
 
     <script>
@@ -112,6 +187,24 @@
             document.getElementById('seats').classList.remove('active');
             document.getElementById('home').classList.add('active');
         }
+        
+        // Магия для активных кнопок времени
+        const timeBtns = document.querySelectorAll('.time-picker .btn-black');
+        timeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                timeBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Магия для дат
+        const dateItems = document.querySelectorAll('.date-picker .date-item');
+        dateItems.forEach(item => {
+            item.addEventListener('click', function() {
+                dateItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
